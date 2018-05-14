@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
   resources :users
-  resources :orders
-  resources :line_items
-  resources :carts
   get 'store/index'
   get 'admin' => 'admin#index'
   controller :sessions do 
@@ -15,6 +12,11 @@ Rails.application.routes.draw do
     get :who_bought, on: :member
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
-  root 'store#index', as: 'store'
+  scope '(:locale)' do 
+    resources :orders
+    resources :line_items
+    resources :carts
+    # Ex:- scope :active, -> {where(:active => true)}
+    root 'store#index', as: 'store', via: :all
+  end
 end
